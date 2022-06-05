@@ -1,9 +1,9 @@
 <script context="module" lang="ts">
-	export const prerender = true;
+	export const prerender = true
 </script>
 
 <script lang="ts">
-	import Counter from '$lib/Counter.svelte';
+	import Counter from '$lib/Counter.svelte'
 </script>
 
 <svelte:head>
@@ -22,7 +22,7 @@
 
 		to your new<br />SvelteKit app
 	</h1>
-
+	<span class="text-gray-600 hover:text-gray-700 font-extrabold">Contact</span>
 	<h2>
 		try editing <strong>src/routes/index.svelte</strong>
 	</h2>
