@@ -7,5 +7,5 @@
   "bracketSpacing": false,
   "trailingComma": "none",
   "arrowParens": "avoid",
-  "plugins": ["./svelte-files/node_modules/prettier-plugin-tailwindcss"]
+  "plugins": ["./gamble-gwent/node_modules/prettier-plugin-tailwindcss"]
 }
