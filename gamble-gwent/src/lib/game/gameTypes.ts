@@ -1,35 +1,37 @@
-import type {GROUP, CARD_CLASS, CARD_TYPE, BOARD_POSITION} from '../constants'
+import type {CARD_CLASS, ROUND_STATES} from '../constants'
+import type {Card} from '../types'
 import type {GameState} from './gameStateStore'
 
-export type CardTransformation = (position?: BOARD_POSITION) => PlacedCard
-export type CardModifier = (card: Card) => Card
+export type GetPlaceablePositions = (
+  boardLayout: BoardLayout,
+  playerNo: number
+) => readonly string[]
+
+export type PlacedCardTransformation = (
+  gameCard: GameCard,
+  selectedGroupId: string
+) => PlacedCard
+export type RemovedCardTransformation = (placedCard: PlacedCard) => GameCard
+
+export type CardModifier = (card: PlacedCard) => PlacedCard
 export type GameEffect = (gameState: GameState) => GameState
 
-export type Card = {
-  readonly id: string
-  readonly name: string
-  readonly desc: string
-  readonly imgUrl?: string
+export type GameCard = Card & {
+  readonly getPlaceablePositions: GetPlaceablePositions
 
-  readonly deck: string
-  readonly class: CARD_CLASS
-  readonly type: CARD_TYPE
+  readonly placedCardTransformation: PlacedCardTransformation
 
-  readonly strength: number
-
-  readonly getPlaceablePositions: () => readonly BOARD_POSITION[]
-
-  readonly onPlacedCardTransformation: CardTransformation
   readonly modifier?: CardModifier
   readonly onPlayedEffect?: GameEffect
   readonly onRemovedEffect?: GameEffect
 }
 
-export type PlacedCard = Card & {
-  readonly position: BOARD_POSITION
-  readonly ownerPlayerNo: 1 | 2
+export type PlacedCard = GameCard & {
+  readonly groupId: string
 
   readonly modifiable: boolean
+
+  readonly removedCardTransformation: RemovedCardTransformation
 }
 
 // ? Derive?
@@ -39,6 +41,33 @@ export type PlacedCard = Card & {
 //   readonly melee: readonly PlacedCard[]
 // }
 
-export type Board = readonly PlacedCard[]
+export type BoardCards = readonly PlacedCard[]
 
-export type OwnedGroups = readonly GROUP[]
+export type BattleGroup = {
+  readonly id: string
+  readonly classType: CARD_CLASS
+  readonly ownerPlayerNo: 1 | 2
+}
+
+export type SideGroup = {
+  readonly id: string
+  readonly classType: CARD_CLASS
+}
+
+export type BoardLayout = {
+  readonly player1: readonly BattleGroup[]
+  readonly player2: readonly BattleGroup[]
+
+  readonly globalModifiers: readonly SideGroup[]
+}
+
+export type GameRound = {
+  readonly id: string
+  readonly roundState: ROUND_STATES
+  readonly winnerPlayerNo: 1 | 2
+  readonly gameId: string
+}
+
+export type Game = {
+  readonly id: string
+}
