@@ -1,0 +1,99 @@
+{
+  "decks": [
+    {
+      "id": "1",
+      "name": "Nilfgaardian Empire",
+      "desc": "Nilfgaardian Empire"
+    },
+    {
+      "id": "2",
+      "name": "Scoiatael",
+      "desc": "Scoiatael"
+    },
+    {
+      "id": "3",
+      "name": "Neutral",
+      "desc": "Neutral"
+    }
+  ],
+  "cards": [
+    {
+      "id": "1-pikachu",
+      "name": "Pikachu",
+      "desc": "Pikachu",
+      "deckId": "1",
+      "class": "RANGED",
+      "type": "UNIT",
+      "strength": 5
+    },
+    {
+      "id": "2-charizard",
+      "name": "Charizard",
+      "desc": "Charizard",
+      "deckId": "1",
+      "class": "MELEE",
+      "type": "UNIT",
+      "strength": 9
+    },
+    {
+      "id": "3-squirtle",
+      "name": "Squirtle",
+      "desc": "Squirtle",
+      "deckId": "2",
+      "class": "RANGED",
+      "type": "UNIT",
+      "strength": 7
+    },
+    {
+      "id": "4-bulbasaur",
+      "name": "Bulbasaur",
+      "desc": "Bulbasaur",
+      "deckId": "2",
+      "class": "SIEGE",
+      "type": "UNIT",
+      "strength": 7
+    }
+  ],
+  "StandardBoardLayout": {
+    "player1": [
+      {
+        "id": "1",
+        "classType": "MELEE",
+        "ownerPlayerNo": 1
+      },
+      {
+        "id": "2",
+        "classType": "RANGED",
+        "ownerPlayerNo": 1
+      },
+      {
+        "id": "3",
+        "classType": "SIEGE",
+        "ownerPlayerNo": 1
+      }
+    ],
+    "player2": [
+      {
+        "id": "4",
+        "classType": "MELEE",
+        "ownerPlayerNo": 2
+      },
+      {
+        "id": "5",
+        "classType": "RANGED",
+        "ownerPlayerNo": 2
+      },
+      {
+        "id": "6",
+        "classType": "SIEGE",
+        "ownerPlayerNo": 2
+      }
+    ],
+    "globalModifiers": [
+      {
+        "id": "7",
+        "classType": "WEATHER"
+      }
+    ]
+  }
+}

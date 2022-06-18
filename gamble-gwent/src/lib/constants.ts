@@ -1,5 +1,3 @@
-// export enum CARD_DECK {}
-
 export type GROUP =
   | 'PLAYER1_MELEE'
   | 'PLAYER1_RANGED'
@@ -8,8 +6,27 @@ export type GROUP =
   | 'PLAYER2_RANGED'
   | 'PLAYER2_SIEGE'
 
-export type BOARD_POSITION = 'MELEE' | 'RANGED' | 'SIEGE' | 'WEATHER'
+export const CARD_CLASS = {
+  MELEE: 'MELEE',
+  RANGED: 'RANGED',
+  SIEGE: 'SIEGE',
+  WEATHER: 'WEATHER'
+}
+export type CARD_CLASS = keyof typeof CARD_CLASS
 
-export type CARD_CLASS = 'MELEE' | 'RANGED' | 'SIEGE' | 'WEATHER'
+export const CARD_TYPE = {
+  UNIT: 'UNIT',
+  HERO_UNIT: 'HERO_UNIT',
+  SPY: 'SPY',
+  HERO_SPY: 'HERO_SPY',
+  WEATHER: 'WEATHER'
+}
+export type CARD_TYPE = keyof typeof CARD_TYPE
 
-export type CARD_TYPE = 'UNIT' | 'HERO_UNIT' | 'SPY' | 'HERO_SPY' | 'WEATHER'
+export type ROUND_STATES =
+  | 'INITIAL'
+  | 'PLAYER1_TURN'
+  | 'PLAYER2_TURN'
+  | 'PLAYER1_PASS_PLAYER2_TURN'
+  | 'PLAYER2_PASS_PLAYER1_TURN'
+  | 'ROUND_END'
