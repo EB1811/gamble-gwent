@@ -44,7 +44,7 @@ export type GameState = {
 //   )
 // }
 
-export const getInitLocalGameState = (
+export const initLocalGameState = (
   playerDeckCards: readonly GameCard[],
   enemyDeckCards: readonly GameCard[],
   boardLayout: BoardLayout
@@ -141,6 +141,16 @@ export const aiPlayCardState = (
   enemyCardsAmount: gameState.enemyCardsAmount - 1
 })
 
+export const playerRoundWinnerState = (gameState: GameState): GameState => ({
+  ...gameState,
+  playerPoints: gameState.playerPoints + 1
+})
+
+export const aiRoundWinnerState = (gameState: GameState): GameState => ({
+  ...gameState,
+  enemyPoints: gameState.playerPoints + 1
+})
+
 const createGameState = () => {
   const defaultState: GameState = {
     playerDeckCards: [],
@@ -171,7 +181,7 @@ const createGameState = () => {
       boardLayout: BoardLayout
     ) =>
       update((gameState: GameState) =>
-        getInitLocalGameState(playerDeckCards, enemyDeckCards, boardLayout)
+        initLocalGameState(playerDeckCards, enemyDeckCards, boardLayout)
       ),
     initRandomPlayerHand: (initCardAmount: number) =>
       update((gameState: GameState) =>
@@ -193,7 +203,11 @@ const createGameState = () => {
     aiPlayCard: (card: GameCard, selectedGroupId: string) =>
       update((gameState: GameState) =>
         aiPlayCardState(gameState, card, selectedGroupId)
-      )
+      ),
+    playerRoundWinner: () =>
+      update((gameState: GameState) => playerRoundWinnerState(gameState)),
+    aiRoundWinner: () =>
+      update((gameState: GameState) => aiRoundWinnerState(gameState))
   }
 }
 
