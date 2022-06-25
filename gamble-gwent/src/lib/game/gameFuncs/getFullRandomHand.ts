@@ -14,6 +14,8 @@ const getFullRandomHand = (
           handCount
         ))()
 
+export default getFullRandomHand
+
 if (import.meta.vitest) {
   const {describe, it, afterEach, expect, vi} = import.meta.vitest
 
@@ -59,5 +61,3 @@ if (import.meta.vitest) {
     )
   })
 }
-
-export default getFullRandomHand

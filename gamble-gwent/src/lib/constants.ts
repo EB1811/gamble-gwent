@@ -7,19 +7,19 @@ export type GROUP =
   | 'PLAYER2_SIEGE'
 
 export const CARD_CLASS = {
-  MELEE: 'MELEE',
-  RANGED: 'RANGED',
-  SIEGE: 'SIEGE',
-  WEATHER: 'WEATHER'
+  MELEE: 'MELEE' as 'MELEE',
+  RANGED: 'RANGED' as 'RANGED',
+  SIEGE: 'SIEGE' as 'SIEGE',
+  WEATHER: 'WEATHER' as 'WEATHER'
 }
 export type CARD_CLASS = keyof typeof CARD_CLASS
 
 export const CARD_TYPE = {
-  UNIT: 'UNIT',
-  HERO_UNIT: 'HERO_UNIT',
-  SPY: 'SPY',
-  HERO_SPY: 'HERO_SPY',
-  WEATHER: 'WEATHER'
+  UNIT: 'UNIT' as 'UNIT',
+  HERO_UNIT: 'HERO_UNIT' as 'HERO_UNIT',
+  SPY: 'SPY' as 'SPY',
+  HERO_SPY: 'HERO_SPY' as 'HERO_SPY',
+  WEATHER: 'WEATHER' as 'WEATHER'
 }
 export type CARD_TYPE = keyof typeof CARD_TYPE
 
