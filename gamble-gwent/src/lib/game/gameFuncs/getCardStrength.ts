@@ -8,12 +8,15 @@ const getCardStrength = (
   modifierCards: readonly PlacedCard[]
 ): number => {
   const cardPostWeatherModifiers: PlacedCard = modifierCards
-    .filter(card => card.type === CARD_TYPE.WEATHER)
-    .reduce((acc, mCard) => mCard.modifier(acc), card)
+    .filter(card => card.class === CARD_TYPE.WEATHER)
+    .reduce((acc, mCard) => mCard.modifier?.(acc) ?? acc, card)
 
   const cardPostOtherModifiers: PlacedCard = modifierCards
-    .filter(card => card.type !== CARD_TYPE.WEATHER)
-    .reduce((acc, mCard) => mCard.modifier(acc), cardPostWeatherModifiers)
+    .filter(card => card.class !== CARD_TYPE.WEATHER)
+    .reduce(
+      (acc, mCard) => mCard.modifier?.(acc) ?? acc,
+      cardPostWeatherModifiers
+    )
 
   return cardPostOtherModifiers.strength
 }
