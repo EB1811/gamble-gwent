@@ -15,6 +15,10 @@
     "allowJs": true,
     "checkJs": true,
     "isolatedModules": true,
+    "strictNullChecks": true,
+    "noImplicitReturns": true,
+    "noImplicitAny": true,
+    "noEmit": true,
     "types": ["vitest/importMeta"]
   },
   "include": ["src/**/*.d.ts", "src/**/*.ts", "src/**/*.js", "src/**/*.svelte"],
