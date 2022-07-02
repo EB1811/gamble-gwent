@@ -17,5 +17,5 @@ export type Card = {
   readonly class: CARD_CLASS
   readonly type: CARD_TYPE
 
-  readonly strength: number
+  readonly strength?: number
 }
