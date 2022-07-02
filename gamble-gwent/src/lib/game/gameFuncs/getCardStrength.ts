@@ -18,7 +18,7 @@ const getCardStrength = (
       cardPostWeatherModifiers
     )
 
-  return cardPostOtherModifiers.strength
+  return cardPostOtherModifiers.strength ?? 0
 }
 
 export default getCardStrength

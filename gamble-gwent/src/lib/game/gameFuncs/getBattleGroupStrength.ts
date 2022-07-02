@@ -1,4 +1,4 @@
-import {CARD_TYPE} from '../../constants'
+import {CARD_CLASS, CARD_TYPE} from '../../constants'
 import type {PlacedCard} from '../gameTypes'
 import getCardStrength from './getCardStrength'
 
@@ -52,6 +52,7 @@ if (import.meta.vitest) {
           ...samplePlacedCard,
           id: '3',
           type: CARD_TYPE.WEATHER,
+          class: CARD_CLASS.WEATHER,
           modifier: (placedCard: PlacedCard) => ({...placedCard, strength: 1})
         }
       ]
