@@ -42,7 +42,7 @@
       "deckId": "2",
       "class": "RANGED",
       "type": "UNIT",
-      "strength": 7
+      "strength": 5
     },
     {
       "id": "4-bulbasaur",
@@ -52,6 +52,23 @@
       "class": "SIEGE",
       "type": "UNIT",
       "strength": 7
+    },
+    {
+      "id": "5-gengar",
+      "name": "Gengar",
+      "desc": "Gengar",
+      "deckId": "2",
+      "class": "SIEGE",
+      "type": "UNIT",
+      "strength": 6
+    },
+    {
+      "id": "6-rain",
+      "name": "Rain",
+      "desc": "Rain",
+      "deckId": "2",
+      "class": "WEATHER",
+      "type": "WEATHER"
     }
   ],
   "StandardBoardLayout": {
