@@ -1,4 +1,4 @@
-import {ROUND_STATE_ACTION} from '../../constants'
+import {ROUND_STATES, ROUND_STATE_ACTION} from '../../constants'
 import type {BoardLayout, GameCard} from '../gameTypes'
 
 export type AIPlay = {
@@ -8,15 +8,27 @@ export type AIPlay = {
   card?: GameCard
   positionId?: string
 }
-const getRandomAIPlay = (
-  board: BoardLayout,
-  playedCards: readonly GameCard[],
-  playerNo: 1 | 2
-): AIPlay => {
-  if (playedCards.length <= 0) return {action: ROUND_STATE_ACTION.passTurn}
+export type RelevantGameInfo = {
+  roundState: ROUND_STATES
+  aiStrength: number
+  playerStrength: number
+}
 
-  const card: GameCard =
-    playedCards[Math.floor(Math.random() * playedCards.length)]
+const getRandomAIPlay = (
+  playerNo: 1 | 2,
+  board: BoardLayout,
+  gameCards: readonly GameCard[],
+  {roundState, aiStrength, playerStrength}: RelevantGameInfo
+): AIPlay => {
+  if (
+    roundState === ROUND_STATES.PLAYER_PASS_ENEMY_TURN &&
+    aiStrength > playerStrength
+  )
+    return {action: ROUND_STATE_ACTION.passTurn}
+
+  if (gameCards.length <= 0) return {action: ROUND_STATE_ACTION.passTurn}
+
+  const card: GameCard = gameCards[Math.floor(Math.random() * gameCards.length)]
 
   const placeablePositions: readonly string[] = card.getPlaceablePositions(
     board,
