@@ -1,1 +1,33 @@
-<div />
+<script lang="ts">
+  import {ROUND_STATES} from '../../constants'
+  import getPlayerStrength from '../gameFuncs/getPlayerStrength'
+  import {gameState} from '../gameStateStore'
+
+  export let playerStrength: number
+  export let enemyStrength: number
+
+  let playerTurn: boolean
+  $: playerTurn = $gameState.roundState.includes(ROUND_STATES.PLAYER_TURN)
+  let roundEnd: boolean
+  $: roundEnd = $gameState.roundState === ROUND_STATES.ROUND_END
+
+  export let passRound: () => void
+</script>
+
+<div>
+  <h2>enemy lives: {2 - $gameState.playerPoints}</h2>
+  <h2>enemy strength: {enemyStrength}</h2>
+  <h2>player lives: {2 - $gameState.enemyPoints}</h2>
+  <h2>player strength: {playerStrength}</h2>
+  <h1>
+    {#if playerTurn}
+      player turn
+    {:else if roundEnd}
+      round finished
+    {/if}
+  </h1>
+  <hr class="my-2" />
+  {#if playerTurn || true}
+    <button on:click={passRound}> Pass Round </button>
+  {/if}
+</div>
