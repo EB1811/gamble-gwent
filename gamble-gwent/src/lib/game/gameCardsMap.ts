@@ -1,4 +1,4 @@
-import type {CARD_CLASS} from '../constants'
+import {CARD_CLASS} from '../constants'
 import type {Card} from '../types'
 import type {
   BoardLayout,
@@ -76,6 +76,24 @@ gameCardsMap.set('4-bulbasaur', (card: Card) => ({
   placedCardTransformation: getGenericPlacedCardTransformation({
     modifiable: true
   })
+}))
+gameCardsMap.set('5-gengar', (card: Card) => ({
+  ...card,
+  getPlaceablePositions: getDefaultUnitPlaceablePositions(card.class),
+  placedCardTransformation: getGenericPlacedCardTransformation({
+    modifiable: true
+  })
+}))
+gameCardsMap.set('6-rain', (card: Card) => ({
+  ...card,
+  getPlaceablePositions: getDefaultUnitPlaceablePositions(card.class),
+  placedCardTransformation: getGenericPlacedCardTransformation({
+    modifiable: true
+  }),
+  modifier: (placedCard: PlacedCard) =>
+    placedCard.class === CARD_CLASS.SIEGE
+      ? {...placedCard, strength: 1}
+      : placedCard
 }))
 
 export default gameCardsMap

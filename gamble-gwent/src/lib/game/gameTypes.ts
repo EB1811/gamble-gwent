@@ -39,19 +39,14 @@ export type BoardCards = readonly PlacedCard[]
 export type BattleGroup = {
   readonly id: string
   readonly classType: CARD_CLASS
-  readonly ownerPlayerNo: 1 | 2
-}
-
-export type SideGroup = {
-  readonly id: string
-  readonly classType: CARD_CLASS
+  readonly ownerPlayerNo?: 1 | 2
 }
 
 export type BoardLayout = {
   readonly player1: readonly BattleGroup[]
   readonly player2: readonly BattleGroup[]
 
-  readonly globalModifiers: readonly SideGroup[]
+  readonly globalModifiers: readonly BattleGroup[]
 }
 
 export type GameRound = {

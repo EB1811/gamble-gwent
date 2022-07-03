@@ -1,7 +1,7 @@
-import {readable, Readable, Subscriber, writable} from 'svelte/store'
-import type {ROUND_STATES} from '../constants'
-import tempData from './../tempData.json'
+import {writable} from 'svelte/store'
+import {ROUND_STATES, ROUND_STATE_ACTION} from '../constants'
 import getFullRandomHand from './gameFuncs/getFullRandomHand'
+import getNextRoundState from './gameFuncs/getNextRoundState'
 import type {BoardLayout, GameCard, PlacedCard} from './gameTypes'
 
 export type GameState = {
@@ -17,32 +17,13 @@ export type GameState = {
   readonly boardLayout: BoardLayout
   readonly boardCards: readonly PlacedCard[]
 
-  // readonly gameTurns?: ['player1', 'player2']
+  // readonly gameTurns?: ['player1', 'ENEMY']
 
   readonly roundState: ROUND_STATES
 
   readonly playerPoints: number
   readonly enemyPoints: number
 }
-
-// export const getFullRandomHand = (
-//   deckCards: readonly GameCard[],
-//   handCards: readonly GameCard[],
-//   totalHandCount: number
-// ): readonly GameCard[] => {
-//   if (handCards.length >= totalHandCount) return handCards
-//   if (deckCards.length === 0) return handCards
-
-//   const randomCardIndex: number = Math.floor(Math.random() * deckCards.length)
-//   return getFullRandomHand(
-//     [
-//       ...deckCards.slice(0, randomCardIndex),
-//       ...deckCards.slice(randomCardIndex + 1)
-//     ],
-//     [...handCards, deckCards[randomCardIndex]],
-//     totalHandCount
-//   )
-// }
 
 export const initLocalGameState = (
   playerDeckCards: readonly GameCard[],
@@ -82,31 +63,39 @@ export const initRandomEnemyHandState = (
 ): GameState => ({
   ...gameState,
   enemyHand: getFullRandomHand(
-    gameState.enemyDeckCards,
-    gameState.enemyHand,
+    gameState.enemyDeckCards ?? [],
+    gameState.enemyHand ?? [],
     initCardAmount
   )
 })
 
+export const startRoundState = (gameState: GameState): GameState => ({
+  ...gameState,
+  roundState: 'INITIAL'
+})
+
 export const initRandomTurnState = (gameState: GameState): GameState => ({
   ...gameState,
-  roundState: Math.random() > 0.5 ? 'PLAYER1_TURN' : 'PLAYER2_TURN'
+  roundState:
+    Math.random() > 0.5
+      ? getNextRoundState(gameState.roundState, ROUND_STATE_ACTION.turnPlayer)
+      : getNextRoundState(gameState.roundState, ROUND_STATE_ACTION.turnEnemy)
 })
 
 export const endTurnState = (gameState: GameState): GameState => ({
   ...gameState,
-  roundState:
-    gameState.roundState === 'PLAYER1_TURN' ? 'PLAYER2_TURN' : 'PLAYER1_TURN'
+  roundState: getNextRoundState(
+    gameState.roundState,
+    ROUND_STATE_ACTION.nextTurn
+  )
 })
 
 export const passRoundState = (gameState: GameState): GameState => ({
   ...gameState,
-  roundState:
-    gameState.roundState === 'PLAYER1_TURN'
-      ? 'PLAYER1_PASS_PLAYER2_TURN'
-      : gameState.roundState === 'PLAYER2_TURN'
-      ? 'PLAYER2_PASS_PLAYER1_TURN'
-      : 'ROUND_END'
+  roundState: getNextRoundState(
+    gameState.roundState,
+    ROUND_STATE_ACTION.passTurn
+  )
 })
 
 export const endRoundState = (gameState: GameState): GameState => ({
@@ -116,16 +105,24 @@ export const endRoundState = (gameState: GameState): GameState => ({
 // ? New file?
 export const playCardState = (
   gameState: GameState,
-  card: GameCard,
+  cardId: string,
   selectedGroupId: string
-): GameState => ({
-  ...gameState,
-  boardCards: [
-    ...gameState.boardCards,
-    card.placedCardTransformation(card, selectedGroupId)
-  ],
-  playerHand: gameState.playerHand.filter(c => c.id !== card.id)
-})
+): GameState =>
+  ((
+    card: GameCard | undefined = gameState.playerHand.find(
+      card => card.id === cardId
+    )
+  ) =>
+    card
+      ? {
+          ...gameState,
+          boardCards: [
+            ...gameState.boardCards,
+            card.placedCardTransformation(card, selectedGroupId)
+          ],
+          playerHand: gameState.playerHand.filter(c => c.id !== card.id)
+        }
+      : gameState)()
 
 export const aiPlayCardState = (
   gameState: GameState,
@@ -137,18 +134,27 @@ export const aiPlayCardState = (
     ...gameState.boardCards,
     card.placedCardTransformation(card, selectedGroupId)
   ],
-  enemyHand: gameState.enemyHand.filter(c => c.id !== card.id),
+  enemyHand: gameState.enemyHand?.filter(c => c.id !== card.id),
   enemyCardsAmount: gameState.enemyCardsAmount - 1
 })
 
 export const playerRoundWinnerState = (gameState: GameState): GameState => ({
   ...gameState,
-  playerPoints: gameState.playerPoints + 1
+  playerPoints: gameState.playerPoints + 1,
+  boardCards: []
 })
 
 export const aiRoundWinnerState = (gameState: GameState): GameState => ({
   ...gameState,
-  enemyPoints: gameState.playerPoints + 1
+  enemyPoints: gameState.enemyPoints + 1,
+  boardCards: []
+})
+
+export const roundDrawState = (gameState: GameState): GameState => ({
+  ...gameState,
+  playerPoints: gameState.playerPoints + 1,
+  enemyPoints: gameState.enemyPoints + 1,
+  boardCards: []
 })
 
 const createGameState = () => {
@@ -191,14 +197,16 @@ const createGameState = () => {
       update((gameState: GameState) =>
         initRandomEnemyHandState(gameState, initCardAmount)
       ),
+    startRound: () =>
+      update((gameState: GameState) => startRoundState(gameState)),
     initRandomTurn: () =>
       update((gameState: GameState) => initRandomTurnState(gameState)),
     endTurn: () => update((gameState: GameState) => endTurnState(gameState)),
     passRound: () =>
       update((gameState: GameState) => passRoundState(gameState)),
-    playCard: (card: GameCard, selectedGroupId: string) =>
+    playCard: (cardId: string, selectedGroupId: string) =>
       update((gameState: GameState) =>
-        playCardState(gameState, card, selectedGroupId)
+        playCardState(gameState, cardId, selectedGroupId)
       ),
     aiPlayCard: (card: GameCard, selectedGroupId: string) =>
       update((gameState: GameState) =>
@@ -207,8 +215,9 @@ const createGameState = () => {
     playerRoundWinner: () =>
       update((gameState: GameState) => playerRoundWinnerState(gameState)),
     aiRoundWinner: () =>
-      update((gameState: GameState) => aiRoundWinnerState(gameState))
+      update((gameState: GameState) => aiRoundWinnerState(gameState)),
+    roundDraw: () => update((gameState: GameState) => roundDrawState(gameState))
   }
 }
 
-export const count = createGameState()
+export const gameState = createGameState()
