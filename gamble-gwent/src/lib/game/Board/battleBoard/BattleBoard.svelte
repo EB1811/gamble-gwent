@@ -1,18 +1,27 @@
 <script lang="ts">
-  // const boardLayout
-  // const boardCards
+  import {gameState} from '../../gameStateStore'
+  import BattleGroup from './boardGroup/BoardGroup.svelte'
 </script>
 
-<div>
-  <div>globalLayout: Foreach SideGroup: Foreach card with id sideGroup Id</div>
-
-  <div>
-    player1Layout: Foreach BattleGroup: Score + Foreach card with id battleGroup
-    Id
+<!-- TODO: Turn into css grid -->
+<div class="mx-auto flex max-w-4xl border-2" style="width: 720px">
+  <div class="my-auto flex border-2">
+    {#each $gameState.boardLayout.globalModifiers as sideGroup}
+      <BattleGroup boardGroup={sideGroup} />
+    {/each}
   </div>
 
-  <div>
-    player1Layout: Foreach BattleGroup: Score + Foreach card with id battleGroup
-    Id
+  <div class="ml-auto flex flex-grow flex-col border-2 ">
+    <div class="border-2">
+      {#each [...$gameState.boardLayout.player2].reverse() as battleGroup}
+        <BattleGroup boardGroup={battleGroup} />
+      {/each}
+    </div>
+
+    <div class="border-2">
+      {#each $gameState.boardLayout.player1 as battleGroup}
+        <BattleGroup boardGroup={battleGroup} />
+      {/each}
+    </div>
   </div>
 </div>
