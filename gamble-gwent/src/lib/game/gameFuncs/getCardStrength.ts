@@ -1,20 +1,20 @@
 import type {PlacedCard} from '../gameTypes'
-import {CARD_TYPE} from '../../constants'
+import {CARD_CLASS} from '../../constants'
 
 // * Need to keep in mind modifier order, WEATHER > Other.
-// * Other order is not important.
+// ? Other order is not important?
 const getCardStrength = (
   card: PlacedCard,
   modifierCards: readonly PlacedCard[]
 ): number => {
   const cardPostWeatherModifiers: PlacedCard = modifierCards
-    .filter(card => card.class === CARD_TYPE.WEATHER)
-    .reduce((acc, mCard) => mCard.modifier?.(acc) ?? acc, card)
+    .filter(card => card.class === CARD_CLASS.WEATHER)
+    .reduce((acc, mCard) => mCard.modifier?.(mCard, acc) ?? acc, card)
 
   const cardPostOtherModifiers: PlacedCard = modifierCards
-    .filter(card => card.class !== CARD_TYPE.WEATHER)
+    .filter(card => card.class !== CARD_CLASS.WEATHER)
     .reduce(
-      (acc, mCard) => mCard.modifier?.(acc) ?? acc,
+      (acc, mCard) => mCard.modifier?.(mCard, acc) ?? acc,
       cardPostWeatherModifiers
     )
 

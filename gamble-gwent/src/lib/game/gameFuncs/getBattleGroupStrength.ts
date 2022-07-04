@@ -11,7 +11,7 @@ const getBattleGroupStrength = (
       acc +
       getCardStrength(card, [
         ...globalModifierCards,
-        ...groupCards.filter(c => c.id !== card.id && c.modifier)
+        ...groupCards.filter(c => c.modifier)
       ]),
     0
   )

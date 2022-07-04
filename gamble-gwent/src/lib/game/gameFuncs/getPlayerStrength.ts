@@ -62,10 +62,23 @@ if (import.meta.vitest) {
           type: CARD_TYPE.WEATHER,
           class: CARD_CLASS.WEATHER,
           groupId: '7',
-          modifier: (placedCard: PlacedCard) =>
-            placedCard.class === 'RANGED'
-              ? {...placedCard, strength: 1}
-              : placedCard
+          modifier: (_, otherCard: PlacedCard) =>
+            otherCard.class === 'RANGED'
+              ? {...otherCard, strength: 1}
+              : otherCard
+        },
+        {
+          ...samplePlacedCard,
+          id: '5',
+          type: CARD_TYPE.UNIT,
+          class: CARD_CLASS.MELEE,
+          groupId: '1',
+          modifier: (modifierCard: PlacedCard, otherCard: PlacedCard) =>
+            modifierCard.id !== otherCard.id &&
+            otherCard.groupId === modifierCard.groupId &&
+            otherCard.strength
+              ? {...otherCard, strength: otherCard.strength * 2}
+              : otherCard
         }
       ]
 
@@ -75,7 +88,7 @@ if (import.meta.vitest) {
         1
       )
 
-      expect(groupStrength).toEqual(7)
+      expect(groupStrength).toEqual(17)
     })
   })
 }
