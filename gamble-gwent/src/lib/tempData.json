@@ -24,7 +24,7 @@
       "deckId": "1",
       "class": "RANGED",
       "type": "UNIT",
-      "strength": 5
+      "strength": 10
     },
     {
       "id": "2-charizard",
@@ -42,7 +42,7 @@
       "deckId": "2",
       "class": "RANGED",
       "type": "UNIT",
-      "strength": 5
+      "strength": 4
     },
     {
       "id": "4-bulbasaur",
@@ -60,7 +60,7 @@
       "deckId": "2",
       "class": "SIEGE",
       "type": "UNIT",
-      "strength": 6
+      "strength": 5
     },
     {
       "id": "6-rain",
@@ -69,6 +69,130 @@
       "deckId": "2",
       "class": "WEATHER",
       "type": "WEATHER"
+    },
+    {
+      "id": "7-arcanine",
+      "name": "Arcanine",
+      "desc": "Arcanine",
+      "deckId": "2",
+      "class": "MELEE",
+      "type": "UNIT",
+      "strength": 6
+    },
+    {
+      "id": "8-pidgey",
+      "name": "Pidgey",
+      "desc": "Pidgey",
+      "deckId": "2",
+      "class": "RANGED",
+      "type": "UNIT",
+      "strength": 2
+    },
+    {
+      "id": "9-pidgeotto",
+      "name": "Pidgeotto",
+      "desc": "Pidgeotto",
+      "deckId": "2",
+      "class": "RANGED",
+      "type": "UNIT",
+      "strength": 5
+    },
+    {
+      "id": "10-rattata",
+      "name": "Rattata",
+      "desc": "Rattata",
+      "deckId": "2",
+      "class": "MELEE",
+      "type": "UNIT",
+      "strength": 3
+    },
+    {
+      "id": "11-meowth",
+      "name": "Meowth",
+      "desc": "Meowth",
+      "deckId": "2",
+      "class": "SIEGE",
+      "type": "UNIT",
+      "strength": 10
+    },
+    {
+      "id": "12-beedrill",
+      "name": "Beedrill",
+      "desc": "Beedrill",
+      "deckId": "2",
+      "class": "MELEE",
+      "type": "UNIT",
+      "strength": 4
+    },
+    {
+      "id": "13-blizzard",
+      "name": "Blizzard",
+      "desc": "Blizzard",
+      "deckId": "2",
+      "class": "WEATHER",
+      "type": "WEATHER"
+    },
+    {
+      "id": "14-fog",
+      "name": "Fog",
+      "desc": "Fog",
+      "deckId": "2",
+      "class": "WEATHER",
+      "type": "WEATHER"
+    },
+    {
+      "id": "15-venusaur",
+      "name": "Venusaur",
+      "desc": "Venusaur",
+      "deckId": "2",
+      "class": "MELEE",
+      "type": "UNIT",
+      "strength": 6
+    },
+    {
+      "id": "16-jigglypuff",
+      "name": "Jigglypuff",
+      "desc": "Jigglypuff",
+      "deckId": "2",
+      "class": "RANGED",
+      "type": "UNIT",
+      "strength": 8
+    },
+    {
+      "id": "17-lucario",
+      "name": "Lucario",
+      "desc": "Lucario",
+      "deckId": "2",
+      "class": "MELEE",
+      "type": "UNIT",
+      "strength": 5
+    },
+    {
+      "id": "18-snorlax",
+      "name": "Snorlax",
+      "desc": "Snorlax",
+      "deckId": "2",
+      "class": "MELEE",
+      "type": "UNIT",
+      "strength": 8
+    },
+    {
+      "id": "19-psyduck",
+      "name": "Psyduck",
+      "desc": "Psyduck",
+      "deckId": "2",
+      "class": "SIEGE",
+      "type": "UNIT",
+      "strength": 1
+    },
+    {
+      "id": "20-piplup",
+      "name": "Piplup",
+      "desc": "Piplup",
+      "deckId": "2",
+      "class": "SIEGE",
+      "type": "UNIT",
+      "strength": 3
     }
   ],
   "StandardBoardLayout": {
