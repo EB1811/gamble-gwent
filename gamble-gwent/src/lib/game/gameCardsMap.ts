@@ -8,6 +8,7 @@ import type {
   PlacedCardTransformation,
   RemovedCardTransformation
 } from './gameTypes'
+import tempData from '../tempData.json'
 
 export const getDefaultUnitPlaceablePositions =
   (cardClass: CARD_CLASS): GetPlaceablePositions =>
@@ -29,120 +30,47 @@ export const getDefaultUnitPlaceablePositions =
     ]
 
 export const getGenericRemovedCardTransformation =
-  (): RemovedCardTransformation => (placedCard: PlacedCard) => {
-    const {groupId, modifiable, removedCardTransformation, ...gameCard} =
-      placedCard
-
-    return gameCard
-  }
+  (overloads?: Partial<GameCard>): RemovedCardTransformation =>
+  ({
+    groupId,
+    modifiable,
+    removedCardTransformation,
+    ...gameCard
+  }: PlacedCard) => ({...gameCard, ...overloads})
 
 export const getGenericPlacedCardTransformation =
-  (
-    placedCardUniqueProperties: Pick<PlacedCard, 'modifiable'>
-  ): PlacedCardTransformation =>
+  (overloads?: Partial<PlacedCard>): PlacedCardTransformation =>
   (gameCard: GameCard, selectedGroupId: string) => ({
-    ...placedCardUniqueProperties,
     ...gameCard,
     groupId: selectedGroupId,
-    removedCardTransformation: getGenericRemovedCardTransformation()
+    modifiable: gameCard.type.includes('HERO') ? false : true,
+    removedCardTransformation: getGenericRemovedCardTransformation(),
+    ...overloads
   })
 
 const gameCardsMap = new Map<string, (card: Card) => GameCard>()
 
-gameCardsMap.set('1-pikachu', (card: Card) => ({
-  ...card,
-  getPlaceablePositions: getDefaultUnitPlaceablePositions(card.class),
-  placedCardTransformation: getGenericPlacedCardTransformation({
-    modifiable: false
-  })
-}))
-gameCardsMap.set('2-charizard', (card: Card) => ({
-  ...card,
-  getPlaceablePositions: getDefaultUnitPlaceablePositions(card.class),
-  placedCardTransformation: getGenericPlacedCardTransformation({
-    modifiable: false
-  })
-}))
-gameCardsMap.set('3-squirtle', (card: Card) => ({
-  ...card,
-  getPlaceablePositions: getDefaultUnitPlaceablePositions(card.class),
-  placedCardTransformation: getGenericPlacedCardTransformation({
-    modifiable: true
-  })
-}))
-gameCardsMap.set('4-bulbasaur', (card: Card) => ({
-  ...card,
-  getPlaceablePositions: getDefaultUnitPlaceablePositions(card.class),
-  placedCardTransformation: getGenericPlacedCardTransformation({
-    modifiable: true
-  })
-}))
-gameCardsMap.set('5-gengar', (card: Card) => ({
-  ...card,
-  getPlaceablePositions: getDefaultUnitPlaceablePositions(card.class),
-  placedCardTransformation: getGenericPlacedCardTransformation({
-    modifiable: true
-  })
-}))
+tempData.cards.forEach(card =>
+  gameCardsMap.set(card.id, (card: Card) => ({
+    ...card,
+    getPlaceablePositions: getDefaultUnitPlaceablePositions(card.class),
+    placedCardTransformation: getGenericPlacedCardTransformation()
+  }))
+)
+
 gameCardsMap.set('6-rain', (card: Card) => ({
   ...card,
   getPlaceablePositions: getDefaultUnitPlaceablePositions(card.class),
-  placedCardTransformation: getGenericPlacedCardTransformation({
-    modifiable: true
-  }),
+  placedCardTransformation: getGenericPlacedCardTransformation(),
   modifier: (_, otherCard: PlacedCard) =>
     otherCard.modifiable && otherCard.class === CARD_CLASS.SIEGE
       ? {...otherCard, strength: 1}
       : otherCard
 }))
-gameCardsMap.set('7-arcanine', (card: Card) => ({
-  ...card,
-  getPlaceablePositions: getDefaultUnitPlaceablePositions(card.class),
-  placedCardTransformation: getGenericPlacedCardTransformation({
-    modifiable: true
-  })
-}))
-gameCardsMap.set('8-pidgey', (card: Card) => ({
-  ...card,
-  getPlaceablePositions: getDefaultUnitPlaceablePositions(card.class),
-  placedCardTransformation: getGenericPlacedCardTransformation({
-    modifiable: true
-  })
-}))
-gameCardsMap.set('9-pidgeotto', (card: Card) => ({
-  ...card,
-  getPlaceablePositions: getDefaultUnitPlaceablePositions(card.class),
-  placedCardTransformation: getGenericPlacedCardTransformation({
-    modifiable: true
-  })
-}))
-gameCardsMap.set('10-rattata', (card: Card) => ({
-  ...card,
-  getPlaceablePositions: getDefaultUnitPlaceablePositions(card.class),
-  placedCardTransformation: getGenericPlacedCardTransformation({
-    modifiable: true
-  })
-}))
-gameCardsMap.set('11-meowth', (card: Card) => ({
-  ...card,
-  getPlaceablePositions: getDefaultUnitPlaceablePositions(card.class),
-  placedCardTransformation: getGenericPlacedCardTransformation({
-    modifiable: false
-  })
-}))
-gameCardsMap.set('12-beedrill', (card: Card) => ({
-  ...card,
-  getPlaceablePositions: getDefaultUnitPlaceablePositions(card.class),
-  placedCardTransformation: getGenericPlacedCardTransformation({
-    modifiable: true
-  })
-}))
 gameCardsMap.set('13-blizzard', (card: Card) => ({
   ...card,
   getPlaceablePositions: getDefaultUnitPlaceablePositions(card.class),
-  placedCardTransformation: getGenericPlacedCardTransformation({
-    modifiable: true
-  }),
+  placedCardTransformation: getGenericPlacedCardTransformation(),
   modifier: (_, otherCard: PlacedCard) =>
     otherCard.modifiable && otherCard.class === CARD_CLASS.MELEE
       ? {...otherCard, strength: 1}
@@ -151,48 +79,16 @@ gameCardsMap.set('13-blizzard', (card: Card) => ({
 gameCardsMap.set('14-fog', (card: Card) => ({
   ...card,
   getPlaceablePositions: getDefaultUnitPlaceablePositions(card.class),
-  placedCardTransformation: getGenericPlacedCardTransformation({
-    modifiable: true
-  }),
+  placedCardTransformation: getGenericPlacedCardTransformation(),
   modifier: (_, otherCard: PlacedCard) =>
     otherCard.modifiable && otherCard.class === CARD_CLASS.RANGED
       ? {...otherCard, strength: 1}
       : otherCard
 }))
-gameCardsMap.set('15-venusaur', (card: Card) => ({
-  ...card,
-  getPlaceablePositions: getDefaultUnitPlaceablePositions(card.class),
-  placedCardTransformation: getGenericPlacedCardTransformation({
-    modifiable: true
-  })
-}))
-gameCardsMap.set('16-jigglypuff', (card: Card) => ({
-  ...card,
-  getPlaceablePositions: getDefaultUnitPlaceablePositions(card.class),
-  placedCardTransformation: getGenericPlacedCardTransformation({
-    modifiable: true
-  })
-}))
-gameCardsMap.set('17-lucario', (card: Card) => ({
-  ...card,
-  getPlaceablePositions: getDefaultUnitPlaceablePositions(card.class),
-  placedCardTransformation: getGenericPlacedCardTransformation({
-    modifiable: true
-  })
-}))
-gameCardsMap.set('18-snorlax', (card: Card) => ({
-  ...card,
-  getPlaceablePositions: getDefaultUnitPlaceablePositions(card.class),
-  placedCardTransformation: getGenericPlacedCardTransformation({
-    modifiable: true
-  })
-}))
 gameCardsMap.set('19-psyduck', (card: Card) => ({
   ...card,
   getPlaceablePositions: getDefaultUnitPlaceablePositions(card.class),
-  placedCardTransformation: getGenericPlacedCardTransformation({
-    modifiable: false
-  }),
+  placedCardTransformation: getGenericPlacedCardTransformation(),
   modifier: (modifierCard: PlacedCard, otherCard: PlacedCard) =>
     otherCard.modifiable &&
     modifierCard.id !== otherCard.id &&
@@ -200,13 +96,6 @@ gameCardsMap.set('19-psyduck', (card: Card) => ({
     otherCard.strength
       ? {...otherCard, strength: otherCard.strength * 2}
       : otherCard
-}))
-gameCardsMap.set('20-piplup', (card: Card) => ({
-  ...card,
-  getPlaceablePositions: getDefaultUnitPlaceablePositions(card.class),
-  placedCardTransformation: getGenericPlacedCardTransformation({
-    modifiable: true
-  })
 }))
 
 export default gameCardsMap

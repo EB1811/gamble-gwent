@@ -23,7 +23,7 @@
       "desc": "Pikachu",
       "deckId": "1",
       "class": "RANGED",
-      "type": "UNIT",
+      "type": "HERO_UNIT",
       "strength": 10
     },
     {
@@ -32,7 +32,7 @@
       "desc": "Charizard",
       "deckId": "1",
       "class": "MELEE",
-      "type": "UNIT",
+      "type": "HERO_UNIT",
       "strength": 9
     },
     {
@@ -112,7 +112,7 @@
       "desc": "Meowth",
       "deckId": "2",
       "class": "SIEGE",
-      "type": "UNIT",
+      "type": "HERO_UNIT",
       "strength": 10
     },
     {
@@ -182,7 +182,7 @@
       "desc": "Psyduck",
       "deckId": "2",
       "class": "SIEGE",
-      "type": "UNIT",
+      "type": "HERO_UNIT",
       "strength": 1
     },
     {
