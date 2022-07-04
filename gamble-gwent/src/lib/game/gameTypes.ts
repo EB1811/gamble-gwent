@@ -13,7 +13,10 @@ export type PlacedCardTransformation = (
 ) => PlacedCard
 export type RemovedCardTransformation = (placedCard: PlacedCard) => GameCard
 
-export type CardModifier = (placedCard: PlacedCard) => PlacedCard
+export type CardModifier = (
+  modifierCard: PlacedCard,
+  otherCard: PlacedCard
+) => PlacedCard
 export type GameEffect = (gameState: GameState) => GameState
 
 export type GameCard = Card & {

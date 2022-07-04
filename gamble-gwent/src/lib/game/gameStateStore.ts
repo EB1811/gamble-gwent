@@ -2,6 +2,7 @@ import {writable} from 'svelte/store'
 import {ROUND_STATES, ROUND_STATE_ACTION} from '../constants'
 import getFullRandomHand from './gameFuncs/getFullRandomHand'
 import getNextRoundState from './gameFuncs/getNextRoundState'
+import getPlayerDiscardCards from './gameFuncs/getPlayerDiscardCards'
 import type {BoardLayout, GameCard, PlacedCard} from './gameTypes'
 
 export type GameState = {
@@ -99,7 +100,16 @@ export const passRoundState = (gameState: GameState): GameState => ({
 })
 
 export const endRoundState = (gameState: GameState): GameState => ({
-  ...gameState
+  ...gameState,
+  boardCards: [],
+  playerDiscard: [
+    ...gameState.playerDiscard,
+    ...getPlayerDiscardCards(gameState.boardLayout, gameState.boardCards, 1)
+  ],
+  enemyDiscard: [
+    ...(gameState.enemyDiscard ?? []),
+    ...getPlayerDiscardCards(gameState.boardLayout, gameState.boardCards, 2)
+  ]
 })
 
 // ? New file?
@@ -140,21 +150,18 @@ export const aiPlayCardState = (
 
 export const playerRoundWinnerState = (gameState: GameState): GameState => ({
   ...gameState,
-  playerPoints: gameState.playerPoints + 1,
-  boardCards: []
+  playerPoints: gameState.playerPoints + 1
 })
 
 export const aiRoundWinnerState = (gameState: GameState): GameState => ({
   ...gameState,
-  enemyPoints: gameState.enemyPoints + 1,
-  boardCards: []
+  enemyPoints: gameState.enemyPoints + 1
 })
 
 export const roundDrawState = (gameState: GameState): GameState => ({
   ...gameState,
   playerPoints: gameState.playerPoints + 1,
-  enemyPoints: gameState.enemyPoints + 1,
-  boardCards: []
+  enemyPoints: gameState.enemyPoints + 1
 })
 
 const createGameState = () => {
@@ -204,6 +211,7 @@ const createGameState = () => {
     endTurn: () => update((gameState: GameState) => endTurnState(gameState)),
     passRound: () =>
       update((gameState: GameState) => passRoundState(gameState)),
+    endRound: () => update((gameState: GameState) => endRoundState(gameState)),
     playCard: (cardId: string, selectedGroupId: string) =>
       update((gameState: GameState) =>
         playCardState(gameState, cardId, selectedGroupId)

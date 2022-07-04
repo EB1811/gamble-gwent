@@ -16,7 +16,12 @@
   )
 
   const aiPlay = () => {
-    console.log('ENEMY TURN --->', $gameState, playerStrength, enemyStrength)
+    console.log(
+      'ENEMY TURN State --->',
+      $gameState,
+      playerStrength,
+      enemyStrength
+    )
     const {
       action,
       card: enemyCard,
@@ -28,7 +33,8 @@
       {
         roundState: $gameState.roundState,
         playerStrength,
-        aiStrength: enemyStrength
+        aiStrength: enemyStrength,
+        boardCards: $gameState.boardCards
       }
     )
     console.log('ENEMY PLAY --->', action, enemyCard, positionId)
@@ -42,10 +48,12 @@
       gameState.aiPlayCard(enemyCard, positionId)
       gameState.endTurn()
     }
+
+    console.log('ENEMY TURN State POST --->', $gameState)
   }
   // setTimeout circular dependency hack https://stackoverflow.com/questions/66743205/svelte-reactive-statement-not-working
   $: $gameState.roundState.includes(ROUND_STATES.ENEMY_TURN) &&
-    setTimeout(() => aiPlay(), Math.random() * 1000)
+    setTimeout(() => aiPlay(), Math.random() * 750 + 250)
 
   let gameRunning: boolean
   $: gameRunning = $gameState.playerPoints < 2 && $gameState.enemyPoints < 2
@@ -63,35 +71,39 @@
     2
   )
 
-  const startGame = () => {
-    gameState.initLocalGame(
-      defaultCards.slice(),
-      defaultCards.slice(),
-      defaultBoardLayout
-    )
-    gameState.initRandomPlayerHand(6)
-    gameState.initRandomEnemyHand(6)
-    gameState.initRandomTurn()
-  }
-
   const passRound = (): void => {
     gameState.passRound()
 
     if ($gameState.roundState === ROUND_STATES.ROUND_END) {
       setTimeout(() => {
-        console.log('next round')
+        console.log('next round STATE --->', $gameState)
         if (playerStrength > enemyStrength) gameState.playerRoundWinner()
         if (playerStrength < enemyStrength) gameState.aiRoundWinner()
         if (playerStrength === enemyStrength) gameState.roundDraw()
+
+        gameState.endRound()
 
         if ($gameState.playerPoints < 2 || $gameState.enemyPoints < 2) {
           gameState.startRound()
           gameState.initRandomTurn()
         }
+
+        console.log('next round POST STATE --->', $gameState)
       }, 4000)
     }
 
-    console.log('post-state', $gameState)
+    console.log('passRound post-state', $gameState)
+  }
+
+  const startGame = () => {
+    gameState.initLocalGame(
+      defaultCards.slice().sort(() => Math.random() - 0.5),
+      defaultCards.slice().sort(() => Math.random() - 0.5),
+      defaultBoardLayout
+    )
+    gameState.initRandomPlayerHand(10)
+    gameState.initRandomEnemyHand(10)
+    gameState.initRandomTurn()
   }
 </script>
 
