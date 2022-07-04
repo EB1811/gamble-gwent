@@ -54,18 +54,25 @@
     </h2>
     <div class="flex">
       {#each groupCards as card}
-        <div class="m-2 h-20 w-20 border-2">
+        <div
+          class="m-2 h-20 w-20 border-2"
+          class:bg-amber-100={!card.modifiable}
+        >
           <h2>{card.name}</h2>
           {#if card.strength}
             <h2
               class:text-rose-600={getCardStrength(
                 card,
-                $gameState.boardCards.filter(card => card.class === 'WEATHER')
-              ) !== card.strength}
+                $gameState.boardCards.filter(c => c.modifier)
+              ) < card.strength}
+              class:text-green-600={getCardStrength(
+                card,
+                $gameState.boardCards.filter(c => c.modifier)
+              ) > card.strength}
             >
               {getCardStrength(
                 card,
-                $gameState.boardCards.filter(card => card.class === 'WEATHER')
+                $gameState.boardCards.filter(c => c.modifier)
               )}
             </h2>
           {/if}

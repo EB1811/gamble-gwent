@@ -1,6 +1,5 @@
 <script lang="ts">
   import {ROUND_STATES} from '../../constants'
-  import getPlayerStrength from '../gameFuncs/getPlayerStrength'
   import {gameState} from '../gameStateStore'
 
   export let playerStrength: number
@@ -17,8 +16,12 @@
 <div>
   <h2>enemy lives: {2 - $gameState.playerPoints}</h2>
   <h2>enemy strength: {enemyStrength}</h2>
+  <h2>enemy cards: {$gameState.enemyHand?.length}</h2>
+  <hr class="my-2" />
   <h2>player lives: {2 - $gameState.enemyPoints}</h2>
   <h2>player strength: {playerStrength}</h2>
+  <h2>player cards: {$gameState.playerHand?.length}</h2>
+  <hr class="my-2" />
   <h1>
     {#if playerTurn}
       player turn
@@ -26,8 +29,9 @@
       round finished
     {/if}
   </h1>
-  <hr class="my-2" />
   {#if playerTurn || true}
-    <button on:click={passRound}> Pass Round </button>
+    <button class="mt-2 bg-gray-200 p-2" on:click={passRound}>
+      Pass Round
+    </button>
   {/if}
 </div>

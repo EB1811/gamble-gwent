@@ -4,8 +4,8 @@
   import SidePiles from './sidePiles/SidePiles.svelte'
 </script>
 
-<div class="mx-auto flex">
-  <div class="">
+<div class="flex flex-auto">
+  <div class="flex-grow justify-center">
     <BattleBoard />
     <PlayerCards />
   </div>
