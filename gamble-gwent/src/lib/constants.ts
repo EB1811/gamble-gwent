@@ -40,6 +40,11 @@ export const ROUND_STATE_ACTION = {
   passTurn: 'passTurn' as 'passTurn'
 }
 export type ROUND_STATE_ACTION = keyof typeof ROUND_STATE_ACTION
+export const PLAYER_ROUND_STATE_ACTION = {
+  nextTurn: 'nextTurn' as 'nextTurn',
+  passTurn: 'passTurn' as 'passTurn'
+}
+export type PLAYER_ROUND_STATE_ACTION = keyof typeof PLAYER_ROUND_STATE_ACTION
 
 export const ROUND_STATE_MACHINE: readonly {
   initial: ROUND_STATES

@@ -2,13 +2,14 @@
   import Board from './Board/Board.svelte'
   import {gameState} from './gameStateStore'
   import tempData from '../tempData.json'
-  import type {BoardLayout, GameCard} from './gameTypes'
+  import type {AIPlay, BoardLayout, GameCard} from './gameTypes'
   import gameCardsMap from './gameCardsMap'
   import type {Card} from '../types'
   import SideInfo from './sideInfo/SideInfo.svelte'
   import {ROUND_STATES, ROUND_STATE_ACTION} from '../constants'
   import getPlayerStrength from './gameFuncs/getPlayerStrength'
-  import getRandomAIPlay, {AIPlay} from './gameFuncs/getRandomAIPlay'
+  import getGuidedRandomAIPlay from './gameFuncs/getGuidedRandomAIPlay'
+  import testAI from './gameFuncs/ai/testAI'
 
   const defaultBoardLayout = tempData.StandardBoardLayout as BoardLayout
   const defaultCards: GameCard[] = tempData.cards.map(card =>
@@ -26,14 +27,16 @@
       action,
       card: enemyCard,
       positionId
-    }: AIPlay = getRandomAIPlay(
+    }: AIPlay = getGuidedRandomAIPlay(
       2,
       $gameState.boardLayout,
       $gameState.enemyHand ?? [],
       {
         roundState: $gameState.roundState,
-        playerStrength,
+        aiLives: 2 - $gameState.playerPoints,
         aiStrength: enemyStrength,
+        playerStrength,
+        playerHandLength: $gameState.playerHand.length,
         boardCards: $gameState.boardCards
       }
     )
@@ -110,6 +113,8 @@
 <div>
   <div>
     <button on:click={startGame}> Init Game </button>
+    <br />
+    <button on:click={() => testAI(5000)}> Test AI Headless Simulator </button>
     <h2>{$gameState.roundState}</h2>
   </div>
   <hr class="m-5" />
