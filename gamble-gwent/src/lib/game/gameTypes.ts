@@ -1,4 +1,9 @@
-import type {CARD_CLASS, ROUND_STATES} from '../constants'
+import type {
+  CARD_CLASS,
+  PLAYER_ROUND_STATE_ACTION,
+  ROUND_STATES,
+  ROUND_STATE_ACTION
+} from '../constants'
 import type {Card} from '../types'
 import type {GameState} from './gameStateStore'
 
@@ -62,3 +67,31 @@ export type GameRound = {
 export type Game = {
   readonly id: string
 }
+
+export type AIPlay = {
+  action: PLAYER_ROUND_STATE_ACTION
+  card?: GameCard
+  positionId?: string
+}
+
+export type RelevantGameInfo = {
+  roundState: ROUND_STATES
+  aiLives: number
+  aiStrength: number
+  playerStrength: number
+  playerHandLength: number
+  boardCards: readonly PlacedCard[]
+}
+
+export type GetAIPlay = (
+  playerNo: 1 | 2,
+  board: BoardLayout,
+  aiCards: readonly GameCard[],
+  {
+    roundState,
+    aiLives,
+    aiStrength,
+    playerStrength,
+    boardCards
+  }: RelevantGameInfo
+) => AIPlay

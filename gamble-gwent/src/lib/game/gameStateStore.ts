@@ -148,6 +148,8 @@ export const aiPlayCardState = (
   enemyCardsAmount: gameState.enemyCardsAmount - 1
 })
 
+// export const postAIPlayState = (gameState: GameState, play: AIPlay): GameState => ({})
+
 export const playerRoundWinnerState = (gameState: GameState): GameState => ({
   ...gameState,
   playerPoints: gameState.playerPoints + 1
