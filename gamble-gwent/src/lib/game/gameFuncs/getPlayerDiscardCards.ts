@@ -1,28 +1,17 @@
 import type {BoardLayout, PlacedCard} from '../gameTypes'
 import tempData from '../../tempData.json'
 import {CARD_CLASS, CARD_TYPE} from '../../constants'
+import getPlayerCards from './getPlayerCards'
 
 const getPlayerDiscardCards = (
   board: BoardLayout,
-  playedCards: readonly PlacedCard[],
+  placedCards: readonly PlacedCard[],
   playerNo: 1 | 2
 ): readonly PlacedCard[] => {
-  const playerCards: readonly PlacedCard[] = Object.entries(board).reduce<
-    readonly PlacedCard[]
-  >(
-    (acc, [_, groups]) => [
-      ...acc,
-      ...playedCards.reduce<readonly PlacedCard[]>(
-        (placedAcc, card) =>
-          groups
-            .filter(g => g.ownerPlayerNo === playerNo)
-            .some(g => g.id === card.groupId)
-            ? [...placedAcc, card]
-            : placedAcc,
-        []
-      )
-    ],
-    []
+  const playerCards: readonly PlacedCard[] = getPlayerCards(
+    board,
+    placedCards,
+    playerNo
   )
 
   // TODO: Weather cards + card onRemovedEffects
