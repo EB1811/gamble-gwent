@@ -2,26 +2,21 @@ import {CARD_CLASS, CARD_TYPE} from '../../constants'
 import type {BoardLayout, PlacedCard} from '../gameTypes'
 import getBattleGroupStrength from './getBattleGroupStrength'
 import tempData from '../../tempData.json'
+import getPlayerCards from './getPlayerCards'
+import getCardStrength from './getCardStrength'
 
 const getPlayerStrength = (
   board: BoardLayout,
   playedCards: readonly PlacedCard[],
   playerNo: 1 | 2
 ): number =>
-  Object.entries(board).reduce<number>(
-    (boardAcc, [_, groups]) =>
-      boardAcc +
-      groups
-        .filter(g => g.ownerPlayerNo === playerNo)
-        .reduce<number>(
-          (groupAcc: number, group) =>
-            groupAcc +
-            getBattleGroupStrength(
-              playedCards.filter(c => c.groupId === group.id),
-              playedCards.filter(c => c.class === CARD_CLASS.WEATHER)
-            ),
-          0
-        ),
+  getPlayerCards(board, playedCards, playerNo).reduce<number>(
+    (acc, card) =>
+      acc +
+      getCardStrength(
+        card,
+        playedCards.filter(c => c.modifier)
+      ),
     0
   )
 
