@@ -114,7 +114,7 @@
   <div>
     <button on:click={startGame}> Init Game </button>
     <br />
-    <button on:click={() => testAI(5000)}> Test AI Headless Simulator </button>
+    <button on:click={() => testAI(1000)}> Test AI Headless Simulator </button>
     <h2>{$gameState.roundState}</h2>
   </div>
   <hr class="m-5" />
