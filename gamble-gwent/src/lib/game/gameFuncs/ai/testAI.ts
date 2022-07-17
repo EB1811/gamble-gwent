@@ -5,10 +5,12 @@ import vsGameSimulation from './vsGameSimulation.js'
 
 // @ts-ignore
 const testAI = games => {
+  console.log('-----------')
+
   console.time('calc wins')
   const wins = [...Array(games)].map(() =>
     // vsGameSimulation(getGuidedRandomAIPlay, getTrueRandomAIPlay)
-    vsGameSimulation(getGuidedRandomAIPlay, getGuidedAIPlaySimple)
+    vsGameSimulation(getGuidedRandomAIPlay, getTrueRandomAIPlay)
   )
   console.timeEnd('calc wins')
 
@@ -33,7 +35,7 @@ const testAI = games => {
     draw: ((statsRaw.draw / games) * 100).toFixed(2)
   }
 
-  console.log(winArray)
+  // console.log(winArray)
   console.log(statsRaw)
   console.log(statsPercent)
 }
