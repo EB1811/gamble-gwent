@@ -90,7 +90,7 @@ const getRandomAIPlay: GetAIPlay = (
         : 0
     }
 
-    if (cardsNeededToWin > 3) return {action: ROUND_STATE_ACTION.passTurn}
+    if (cardsNeededToWin > 2) return {action: ROUND_STATE_ACTION.passTurn}
   }
 
   const playerPlacedCards: readonly PlacedCard[] = getPlayerCards(
@@ -109,22 +109,22 @@ const getRandomAIPlay: GetAIPlay = (
   ).filter(card => {
     if (card.modifier) {
       const a = getModifierCardStrengthDiff(card, [
-        ...playerPlacedCards,
-        ...aiCards
-          .filter(c => c.id !== card.id)
-          .map(c => c.placedCardTransformation(c, '0'))
+        ...playerPlacedCards
+        // ...aiCards
+        //   .filter(c => c.id !== card.id)
+        //   .map(c => c.placedCardTransformation(c, '0'))
       ])
       const b = getModifierCardStrengthDiff(card, enemyPlacedCards)
 
-      console.log('a mod card ->', {card})
-      console.log('a cards ->', [
-        ...getPlayerCards(board, boardCards, playerNo),
-        ...aiCards
-          .filter(c => c.id !== card.id)
-          .map(c => c.placedCardTransformation(c, '0'))
-      ])
-      console.log({a}, {b})
-      console.log(a - b >= 0)
+      // console.log('a mod card ->', {card})
+      // console.log('a cards ->', [
+      //   ...getPlayerCards(board, boardCards, playerNo),
+      //   ...aiCards
+      //     .filter(c => c.id !== card.id)
+      //     .map(c => c.placedCardTransformation(c, '0'))
+      // ])
+      // console.log({a}, {b})
+      // console.log(a - b >= 0)
 
       return a - b >= 0
     } else {
@@ -136,6 +136,8 @@ const getRandomAIPlay: GetAIPlay = (
 
   // const filteredHandCards: readonly GameCard[] =
   //   filteredModifierCards.length > 0 ? filteredModifierCards : aiCards
+
+  // console.log('filteredModifierCards --->', {filteredModifierCards})
 
   const chosenCard: GameCard | undefined =
     filteredModifierCards.length > 0
