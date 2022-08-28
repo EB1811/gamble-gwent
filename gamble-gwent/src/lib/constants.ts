@@ -10,16 +10,19 @@ export const CARD_CLASS = {
   MELEE: 'MELEE' as 'MELEE',
   RANGED: 'RANGED' as 'RANGED',
   SIEGE: 'SIEGE' as 'SIEGE',
-  WEATHER: 'WEATHER' as 'WEATHER'
+  WEATHER: 'WEATHER' as 'WEATHER',
+  EFFECT: 'EFFECT' as 'EFFECT'
 }
 export type CARD_CLASS = keyof typeof CARD_CLASS
 
 export const CARD_TYPE = {
+  ANY: 'ANY' as 'ANY',
   UNIT: 'UNIT' as 'UNIT',
   HERO_UNIT: 'HERO_UNIT' as 'HERO_UNIT',
   SPY: 'SPY' as 'SPY',
   HERO_SPY: 'HERO_SPY' as 'HERO_SPY',
-  WEATHER: 'WEATHER' as 'WEATHER'
+  WEATHER: 'WEATHER' as 'WEATHER',
+  EFFECT: 'EFFECT' as 'EFFECT'
 }
 export type CARD_TYPE = keyof typeof CARD_TYPE
 

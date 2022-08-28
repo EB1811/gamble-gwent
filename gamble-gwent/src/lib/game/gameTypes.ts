@@ -16,13 +16,18 @@ export type PlacedCardTransformation = (
   gameCard: GameCard,
   selectedGroupId: string
 ) => PlacedCard
-export type RemovedCardTransformation = (placedCard: PlacedCard) => GameCard
+export type RemovedCardTransformation = (
+  placedCard: PlacedCard
+) => DiscardedCard
 
 export type CardModifier = (
   modifierCard: PlacedCard,
   otherCard: PlacedCard
 ) => PlacedCard
-export type GameEffect = (gameState: GameState) => GameState
+export type GameEffect = (
+  gameState: GameState,
+  playedCard?: GameCard
+) => GameState
 
 export type GameCard = Card & {
   readonly getPlaceablePositions: GetPlaceablePositions
@@ -35,11 +40,15 @@ export type GameCard = Card & {
 }
 
 export type PlacedCard = GameCard & {
-  readonly groupId: string
+  readonly groupId?: string
 
-  readonly modifiable: boolean
+  readonly modifiable?: boolean
 
   readonly removedCardTransformation: RemovedCardTransformation
+}
+
+export type DiscardedCard = GameCard & {
+  readonly playable: boolean
 }
 
 export type BoardCards = readonly PlacedCard[]

@@ -193,6 +193,14 @@
       "class": "SIEGE",
       "type": "UNIT",
       "strength": 3
+    },
+    {
+      "id": "20-scorch",
+      "name": "Scorch",
+      "desc": "Scorch",
+      "deckId": "3",
+      "class": "EFFECT",
+      "type": "EFFECT"
     }
   ],
   "StandardBoardLayout": {
