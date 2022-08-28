@@ -3,17 +3,23 @@ import {ROUND_STATES, ROUND_STATE_ACTION} from '../constants'
 import getFullRandomHand from './gameFuncs/getFullRandomHand'
 import getNextRoundState from './gameFuncs/getNextRoundState'
 import getPlayerDiscardCards from './gameFuncs/getPlayerDiscardCards'
-import type {BoardLayout, GameCard, PlacedCard} from './gameTypes'
+import type {
+  BoardLayout,
+  DiscardedCard,
+  GameCard,
+  GameEffect,
+  PlacedCard
+} from './gameTypes'
 
 export type GameState = {
   readonly playerDeckCards: readonly GameCard[]
   readonly playerHand: readonly GameCard[]
-  readonly playerDiscard: readonly GameCard[]
+  readonly playerDiscard: readonly DiscardedCard[]
 
   readonly enemyCardsAmount: number
   readonly enemyDeckCards?: readonly GameCard[]
   readonly enemyHand?: readonly GameCard[]
-  readonly enemyDiscard?: readonly GameCard[]
+  readonly enemyDiscard?: readonly DiscardedCard[]
 
   readonly boardLayout: BoardLayout
   readonly boardCards: readonly PlacedCard[]
@@ -113,26 +119,27 @@ export const endRoundState = (gameState: GameState): GameState => ({
 })
 
 // ? New file?
-export const playCardState = (
+export const placeCardState = (
   gameState: GameState,
-  cardId: string,
+  card: GameCard,
   selectedGroupId: string
 ): GameState =>
-  ((
-    card: GameCard | undefined = gameState.playerHand.find(
-      card => card.id === cardId
-    )
-  ) =>
-    card
-      ? {
-          ...gameState,
-          boardCards: [
-            ...gameState.boardCards,
-            card.placedCardTransformation(card, selectedGroupId)
-          ],
-          playerHand: gameState.playerHand.filter(c => c.id !== card.id)
-        }
-      : gameState)()
+  card
+    ? {
+        ...gameState,
+        boardCards: [
+          ...gameState.boardCards,
+          card.placedCardTransformation(card, selectedGroupId)
+        ],
+        playerHand: gameState.playerHand.filter(c => c.id !== card.id)
+      }
+    : gameState
+
+export const playCardEffectState = (
+  gameState: GameState,
+  card: GameCard,
+  cardGameEffect: GameEffect
+) => cardGameEffect(gameState, card)
 
 export const aiPlayCardState = (
   gameState: GameState,
@@ -214,14 +221,20 @@ const createGameState = () => {
     passRound: () =>
       update((gameState: GameState) => passRoundState(gameState)),
     endRound: () => update((gameState: GameState) => endRoundState(gameState)),
-    playCard: (cardId: string, selectedGroupId: string) =>
+
+    placeCard: (card: GameCard, selectedGroupId: string) =>
       update((gameState: GameState) =>
-        playCardState(gameState, cardId, selectedGroupId)
+        placeCardState(gameState, card, selectedGroupId)
       ),
     aiPlayCard: (card: GameCard, selectedGroupId: string) =>
       update((gameState: GameState) =>
         aiPlayCardState(gameState, card, selectedGroupId)
       ),
+    playCardEffect: (card: GameCard, cardEffect: GameEffect) =>
+      update((gameState: GameState) =>
+        playCardEffectState(gameState, card, cardEffect)
+      ),
+
     playerRoundWinner: () =>
       update((gameState: GameState) => playerRoundWinnerState(gameState)),
     aiRoundWinner: () =>

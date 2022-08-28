@@ -2,7 +2,7 @@
   import getBattleGroupStrength from '../../../gameFuncs/getBattleGroupStrength'
   import getCardStrength from '../../../gameFuncs/getCardStrength'
   import {gameState} from '../../../gameStateStore'
-  import type {BattleGroup, PlacedCard} from '../../../gameTypes'
+  import type {BattleGroup, GameCard, PlacedCard} from '../../../gameTypes'
   import {battleBoardState} from '../battleBoardStore'
 
   export let boardGroup: BattleGroup
@@ -18,22 +18,25 @@
     $gameState.boardCards.filter(card => card.class === 'WEATHER')
   )
 
-  const handleDragOver = (e: DragEvent, groupId: string) => {
-    if ($battleBoardState.placeablePosition.includes(groupId))
+  const handleDragOver = (e: DragEvent, groupId: string | undefined) => {
+    if (groupId && $battleBoardState.placeablePosition.includes(groupId))
       e.preventDefault()
   }
 
-  const handleDragDrop = (e: DragEvent, groupId: string): void => {
+  const handleDragDrop = (e: DragEvent, groupId: string | undefined): void => {
     e.preventDefault()
 
     const placedCardId: string | undefined = e.dataTransfer?.getData('cardId')
-    if (placedCardId) {
-      gameState.playCard(placedCardId, groupId)
+    const placedCard: GameCard | undefined = $gameState.playerHand.find(
+      card => card.id === placedCardId
+    )
+    if (placedCard && groupId) {
+      gameState.placeCard(placedCard, groupId)
       gameState.endTurn()
     }
     battleBoardState.setPlaceablePosition([])
 
-    console.log('after playCard state', $gameState)
+    console.log('after placeCard state', $gameState)
   }
 </script>
 

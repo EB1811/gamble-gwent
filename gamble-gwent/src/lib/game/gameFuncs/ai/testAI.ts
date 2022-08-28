@@ -7,12 +7,12 @@ import vsGameSimulation from './vsGameSimulation.js'
 const testAI = games => {
   console.log('-----------')
 
-  console.time('calc wins')
+  console.time('Simulation')
   const wins = [...Array(games)].map(() =>
     // vsGameSimulation(getGuidedRandomAIPlay, getTrueRandomAIPlay)
     vsGameSimulation(getGuidedRandomAIPlay, getTrueRandomAIPlay)
   )
-  console.timeEnd('calc wins')
+  console.timeEnd('Simulation')
 
   const winArray = wins.map(w => (w === 0 ? 'draw' : w === 1 ? 'ai1' : 'ai2'))
   const statsRaw = winArray.reduce(

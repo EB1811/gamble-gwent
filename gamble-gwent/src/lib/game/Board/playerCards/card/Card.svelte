@@ -1,10 +1,10 @@
 <script lang="ts">
-  import type {GameCard} from 'src/lib/game/gameTypes'
+  import type {DiscardedCard, GameCard} from 'src/lib/game/gameTypes'
   import {battleBoardState} from '../../battleBoard/battleBoardStore'
   import {gameState} from '../../../gameStateStore'
   import {ROUND_STATES} from '../../../../constants'
 
-  export let card: GameCard
+  export let card: GameCard | DiscardedCard
   export let playable: boolean
 
   let playerTurn: boolean

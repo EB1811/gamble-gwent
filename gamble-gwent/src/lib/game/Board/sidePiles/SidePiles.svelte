@@ -1,7 +1,6 @@
 <script lang="ts">
   import Card from '../playerCards/card/Card.svelte'
   import {gameState} from '../../gameStateStore'
-  import type {PlacedCard} from '../../gameTypes'
 </script>
 
 <div class="max-w-md">

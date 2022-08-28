@@ -1,4 +1,4 @@
-import type {BoardLayout, PlacedCard} from '../gameTypes'
+import type {BoardLayout, DiscardedCard, PlacedCard} from '../gameTypes'
 import tempData from '../../tempData.json'
 import {CARD_CLASS, CARD_TYPE} from '../../constants'
 import getPlayerCards from './getPlayerCards'
@@ -7,12 +7,12 @@ const getPlayerDiscardCards = (
   board: BoardLayout,
   placedCards: readonly PlacedCard[],
   playerNo: 1 | 2
-): readonly PlacedCard[] => {
-  const playerCards: readonly PlacedCard[] = getPlayerCards(
+): readonly DiscardedCard[] => {
+  const playerCards: readonly DiscardedCard[] = getPlayerCards(
     board,
     placedCards,
     playerNo
-  )
+  ).map(c => c.removedCardTransformation(c))
 
   // TODO: Weather cards + card onRemovedEffects
 
@@ -63,7 +63,7 @@ if (import.meta.vitest) {
         }
       ]
 
-      const discardCards: readonly PlacedCard[] = getPlayerDiscardCards(
+      const discardCards: readonly DiscardedCard[] = getPlayerDiscardCards(
         defaultBoardLayout,
         placedCards,
         1
