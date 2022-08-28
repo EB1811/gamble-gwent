@@ -52,45 +52,74 @@ const getRandomAIPlay: GetAIPlay = (
   // if (aiLives > 1 && Math.random() > 0.99)
   //   return {action: ROUND_STATE_ACTION.passTurn}
 
+  // ? equation to also take into account enemy cards amount.
   if (
     aiLives > 1 &&
-    playerStrength - aiStrength > 10 &&
-    aiCards.length > playerHandLength + 2
+    aiStrength < playerStrength &&
+    aiCards.length > 2 &&
+    aiCards.length > playerHandLength
   ) {
-    const sortedByStrengthCards: readonly GameCard[] = [...aiCards].sort(
-      (c1, c2) =>
-        getCardStrength(
-          c1.placedCardTransformation(c1, '0'),
-          placedWeatherCards
-        ) >
-        getCardStrength(
-          c2.placedCardTransformation(c2, '0'),
-          placedWeatherCards
-        )
-          ? -1
-          : 1
-    )
+    if (aiStrength + 5 < playerStrength && Math.random() > 0.95)
+      return {action: ROUND_STATE_ACTION.passTurn}
+    if (aiStrength + 10 < playerStrength && Math.random() > 0.9)
+      return {action: ROUND_STATE_ACTION.passTurn}
+    else if (aiStrength + 15 < playerStrength && Math.random() > 0.85)
+      return {action: ROUND_STATE_ACTION.passTurn}
+    else if (aiStrength + 18 < playerStrength && Math.random() > 0.5)
+      return {action: ROUND_STATE_ACTION.passTurn}
+    else if (aiStrength + 20 < playerStrength && Math.random() > 0.2)
+      return {action: ROUND_STATE_ACTION.passTurn}
+    else if (aiStrength + 25 < playerStrength && Math.random() > 0.1)
+      return {action: ROUND_STATE_ACTION.passTurn}
+    // const sortedByStrengthCards: readonly GameCard[] = [...aiCards].sort(
+    //   (c1, c2) =>
+    //     getCardStrength(
+    //       c1.placedCardTransformation(c1, '0'),
+    //       placedWeatherCards
+    //     ) >
+    //     getCardStrength(
+    //       c2.placedCardTransformation(c2, '0'),
+    //       placedWeatherCards
+    //     )
+    //       ? -1
+    //       : 1
+    // )
 
-    // ! FOR NOW
-    let cardsNeededToWin: number = 0
-    let remainingStrength: number = playerStrength - aiStrength
-    let index: number = 0
-    while (remainingStrength > 0 && cardsNeededToWin < 3) {
-      cardsNeededToWin += 1
-      index += 1
+    // // ! FOR NOW
+    // let cardsNeededToWin: number = 0
+    // let remainingStrength: number = playerStrength - aiStrength
+    // let index: number = 0
+    // while (remainingStrength > 0 && cardsNeededToWin < 3) {
+    //   cardsNeededToWin += 1
+    //   index += 1
+    //   remainingStrength -= sortedByStrengthCards[index]
+    //     ? getCardStrength(
+    //         sortedByStrengthCards[index].placedCardTransformation(
+    //           sortedByStrengthCards[index],
+    //           '0'
+    //         ),
+    //         placedWeatherCards
+    //       )
+    //     : 0
+    // }
+    // if (cardsNeededToWin >= 3) return {action: ROUND_STATE_ACTION.passTurn}
+  }
 
-      remainingStrength -= sortedByStrengthCards[index]
-        ? getCardStrength(
-            sortedByStrengthCards[index].placedCardTransformation(
-              sortedByStrengthCards[index],
-              '0'
-            ),
-            placedWeatherCards
-          )
-        : 0
-    }
-
-    if (cardsNeededToWin > 2) return {action: ROUND_STATE_ACTION.passTurn}
+  // ? equation to also take into account enemy cards amount?
+  // 87.4
+  if (
+    aiLives > 1 &&
+    aiStrength > playerStrength &&
+    aiCards.length > playerHandLength
+  ) {
+    if (aiStrength > playerStrength && Math.random() > 0.95)
+      return {action: ROUND_STATE_ACTION.passTurn}
+    else if (aiStrength > playerStrength + 5 && Math.random() > 0.75)
+      return {action: ROUND_STATE_ACTION.passTurn}
+    else if (aiStrength > playerStrength + 10 && Math.random() > 0.25)
+      return {action: ROUND_STATE_ACTION.passTurn}
+    else if (aiStrength > playerStrength + 15 && Math.random() > 0.05)
+      return {action: ROUND_STATE_ACTION.passTurn}
   }
 
   const playerPlacedCards: readonly PlacedCard[] = getPlayerCards(
