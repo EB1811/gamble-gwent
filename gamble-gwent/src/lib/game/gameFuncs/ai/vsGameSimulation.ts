@@ -9,21 +9,21 @@ import gameCardsMap from '../../gameCardsMap'
 import type {Card} from '../../../../lib/types'
 import getFullRandomHand from '../getFullRandomHand'
 import {
-  aiPlayCardState,
+  aiPlaceCardState,
   aiRoundWinnerState,
   endRoundState,
   endTurnState,
-  GameState,
   initLocalGameState,
   initRandomEnemyHandState,
   initRandomPlayerHandState,
   initRandomTurnState,
   passRoundState,
-  playCardState,
+  placeCardState,
   playerRoundWinnerState,
   roundDrawState,
   startRoundState
 } from '../../gameStateStore'
+import type {GameState} from '../../gameStateStore'
 import {ROUND_STATES, ROUND_STATE_ACTION} from '../../../../lib/constants'
 import getPlayerStrength from '../getPlayerStrength'
 
@@ -124,9 +124,9 @@ const vsGameSimulation = (
         alg1Play.card &&
         alg1Play.positionId
       ) {
-        currentGameState = playCardState(
+        currentGameState = placeCardState(
           currentGameState,
-          alg1Play.card.id,
+          alg1Play.card,
           alg1Play.positionId
         )
         currentGameState = endTurnState(currentGameState)
@@ -150,7 +150,7 @@ const vsGameSimulation = (
         alg2Play.card &&
         alg2Play.positionId
       ) {
-        currentGameState = aiPlayCardState(
+        currentGameState = aiPlaceCardState(
           currentGameState,
           alg2Play.card,
           alg2Play.positionId
