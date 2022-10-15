@@ -24,19 +24,21 @@
   }
 
   const handleDragDrop = (e: DragEvent, groupId: string | undefined): void => {
-    e.preventDefault()
+    if (groupId && $battleBoardState.placeablePosition.includes(groupId)) {
+      e.preventDefault()
 
-    const placedCardId: string | undefined = e.dataTransfer?.getData('cardId')
-    const placedCard: GameCard | undefined = $gameState.playerHand.find(
-      card => card.id === placedCardId
-    )
-    if (placedCard && groupId) {
-      gameState.placeCard(placedCard, groupId)
-      gameState.endTurn()
+      const placedCardId: string | undefined = e.dataTransfer?.getData('cardId')
+      const placedCard: GameCard | undefined = $gameState.playerHand.find(
+        card => card.id === placedCardId
+      )
+      if (placedCard && groupId) {
+        gameState.placeCard(placedCard, groupId)
+        gameState.endTurn()
+      }
+      battleBoardState.setPlaceablePosition([])
+
+      console.log('after placeCard state', $gameState)
     }
-    battleBoardState.setPlaceablePosition([])
-
-    console.log('after placeCard state', $gameState)
   }
 </script>
 

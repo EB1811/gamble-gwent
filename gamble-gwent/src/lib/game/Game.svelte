@@ -48,7 +48,7 @@
       enemyCard &&
       positionId
     ) {
-      gameState.aiPlayCard(enemyCard, positionId)
+      gameState.aiPlaceCard(enemyCard, positionId)
       gameState.endTurn()
     }
 

@@ -26,6 +26,7 @@ export type CardModifier = (
 ) => PlacedCard
 export type GameEffect = (
   gameState: GameState,
+  playerNo?: number,
   playedCard?: GameCard
 ) => GameState
 

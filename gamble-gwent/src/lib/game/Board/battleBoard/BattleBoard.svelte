@@ -9,19 +9,21 @@
   }
 
   const handleDragDrop = (e: DragEvent): void => {
-    e.preventDefault()
+    if ($battleBoardState.placeablePosition.includes('NONE')) {
+      e.preventDefault()
 
-    const placedCardId: string | undefined = e.dataTransfer?.getData('cardId')
-    const placeCard: GameCard | undefined = $gameState.playerHand.find(
-      card => card.id === placedCardId
-    )
-    if (placeCard?.onPlayedEffect) {
-      gameState.playCardEffect(placeCard, placeCard?.onPlayedEffect)
-      gameState.endTurn()
+      const placedCardId: string | undefined = e.dataTransfer?.getData('cardId')
+      const placeCard: GameCard | undefined = $gameState.playerHand.find(
+        card => card.id === placedCardId
+      )
+      if (placeCard?.onPlayedEffect) {
+        gameState.playCardEffect(placeCard, 1, placeCard?.onPlayedEffect)
+        gameState.endTurn()
+      }
+      battleBoardState.setPlaceablePosition([])
+
+      console.log('after playCard state', $gameState)
     }
-    battleBoardState.setPlaceablePosition([])
-
-    console.log('after playCard state', $gameState)
   }
 </script>
 
