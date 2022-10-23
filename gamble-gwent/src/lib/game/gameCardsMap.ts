@@ -114,35 +114,63 @@ gameCardsMap.set('20-scorch', (card: Card) => ({
       playable: false
     })
   }),
-  onPlayedEffect: (gameState: GameState, playedCard?: GameCard) => {
+  onPlayedEffect: (
+    gameState: GameState,
+    playerNo?: number,
+    playedCard?: GameCard
+  ) => {
     const strongestCard: PlacedCard = gameState.boardCards
       .filter(c => c.strength)
       .sort((a, b) => (a.strength! > b.strength! ? -1 : 1))[0]
-
-    const isPlayerCard: boolean = gameState.boardLayout.player1.some(
+    const isStrongestPlayerCard: boolean = gameState.boardLayout.player1.some(
       bg => bg.id === strongestCard.groupId
     )
 
     // TODO: Create function for this.
     // TODO: onRemovedEffect.
 
-    return {
+    const postEffectGameState: GameState = {
       ...gameState,
       boardCards: gameState.boardCards.filter(c => c.id !== strongestCard.id),
-      ...(isPlayerCard
+      ...(isStrongestPlayerCard
         ? {
             playerDiscard: [
               ...gameState.playerDiscard,
-              ...(playedCard ? [{...playedCard, playable: false}] : []),
               strongestCard.removedCardTransformation(strongestCard)
             ]
           }
         : {
             enemyDiscard: [
               ...(gameState.enemyDiscard ?? []),
-              ...(playedCard ? [{...playedCard, playable: false}] : []),
               strongestCard.removedCardTransformation(strongestCard)
             ]
+          })
+    }
+
+    return {
+      ...postEffectGameState,
+      ...(playerNo === 1
+        ? {
+            playerHand: postEffectGameState.playerHand.filter(
+              c => c.id !== card.id
+            ),
+            playerDiscard: playedCard
+              ? [
+                  ...gameState.playerDiscard,
+                  {...playedCard, playable: false} as DiscardedCard
+                ]
+              : gameState.playerDiscard
+          }
+        : {
+            enemyHand: postEffectGameState.enemyHand?.filter(
+              c => c.id !== card.id
+            ),
+            enemyDiscard: playedCard
+              ? [
+                  ...(gameState.enemyDiscard ?? []),
+                  {...playedCard, playable: false} as DiscardedCard
+                ]
+              : gameState.enemyDiscard
           })
     }
   }
