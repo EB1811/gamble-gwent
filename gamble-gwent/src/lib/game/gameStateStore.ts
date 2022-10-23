@@ -123,25 +123,23 @@ export const placeCardState = (
   gameState: GameState,
   card: GameCard,
   selectedGroupId: string
-): GameState =>
-  card
-    ? {
-        ...gameState,
-        boardCards: [
-          ...gameState.boardCards,
-          card.placedCardTransformation(card, selectedGroupId)
-        ],
-        playerHand: gameState.playerHand.filter(c => c.id !== card.id)
-      }
-    : gameState
+): GameState => ({
+  ...gameState,
+  boardCards: [
+    ...gameState.boardCards,
+    card.placedCardTransformation(card, selectedGroupId)
+  ],
+  playerHand: gameState.playerHand.filter(c => c.id !== card.id)
+})
 
 export const playCardEffectState = (
   gameState: GameState,
   card: GameCard,
+  playerNo: number,
   cardGameEffect: GameEffect
-) => cardGameEffect(gameState, card)
+): GameState => cardGameEffect(gameState, playerNo, card)
 
-export const aiPlayCardState = (
+export const aiPlaceCardState = (
   gameState: GameState,
   card: GameCard,
   selectedGroupId: string
@@ -154,6 +152,17 @@ export const aiPlayCardState = (
   enemyHand: gameState.enemyHand?.filter(c => c.id !== card.id),
   enemyCardsAmount: gameState.enemyCardsAmount - 1
 })
+
+// export const playCardState = (
+//   gameState: GameState,
+//   card: GameCard,
+//   playerNo: number,
+//   selectedGroupId?: string
+// ): GameState => {
+//   if(selectedGroupId) {
+//     return placeCardState(gameState, card, selectedGroupId)
+//   }
+// }
 
 // export const postAIPlayState = (gameState: GameState, play: AIPlay): GameState => ({})
 
@@ -226,13 +235,17 @@ const createGameState = () => {
       update((gameState: GameState) =>
         placeCardState(gameState, card, selectedGroupId)
       ),
-    aiPlayCard: (card: GameCard, selectedGroupId: string) =>
+    aiPlaceCard: (card: GameCard, selectedGroupId: string) =>
       update((gameState: GameState) =>
-        aiPlayCardState(gameState, card, selectedGroupId)
+        aiPlaceCardState(gameState, card, selectedGroupId)
       ),
-    playCardEffect: (card: GameCard, cardEffect: GameEffect) =>
+    playCardEffect: (
+      card: GameCard,
+      playerNo: number,
+      cardEffect: GameEffect
+    ) =>
       update((gameState: GameState) =>
-        playCardEffectState(gameState, card, cardEffect)
+        playCardEffectState(gameState, card, playerNo, cardEffect)
       ),
 
     playerRoundWinner: () =>
